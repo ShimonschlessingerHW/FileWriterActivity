@@ -1,5 +1,4 @@
 import java.io.*;
-import java.io.File;
 
 public class MyFileWriter {
     private static void printFileSize(String fileName) {
