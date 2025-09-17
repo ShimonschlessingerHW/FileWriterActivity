@@ -10,20 +10,25 @@ public class MyFileWriter {
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append("\n");
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             // throw new IOException();
         }
 
         return sb.toString();
     }
 
-    private static void printFileSize(String fileName) {
-        File file = new File("./" + fileName);
-        long length = file.length();
-        System.out.println(String.format("%s has length %d", fileName, length));
+    private static void printFileSize(String... fileNames) {
+        long totalSize = 0;
+        for (String fileName : fileNames) {
+            File file = new File(fileName);
+            if (file.exists()) {
+                totalSize += file.length();
+            }
+        }
+        System.out.println("Total size of all files: " + totalSize + " bytes");
     }
 
-    public static void generateHiddenFile(String fileName, String data){
+    public static void generateHiddenFile(String fileName, String data) {
         String filePath = "." + fileName;
         try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(filePath))) {
             bufferedOutputStream.write(data.getBytes());
@@ -32,7 +37,7 @@ public class MyFileWriter {
         }
     }
 
-    public static void generateHiddenFile(String folderName, String fileName, String data){
+    public static void generateHiddenFile(String folderName, String fileName, String data) {
         String filePath = "." + folderName + "/." + fileName;
         try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(filePath))) {
             bufferedOutputStream.write(data.getBytes());
@@ -43,8 +48,13 @@ public class MyFileWriter {
 
     public static void main(String[] args) {
         generateHiddenFile("file.txt", "great assignment! love this!! so much fun!!!");
-        generateHiddenFile("Folder", "file.txt", "this is very different");
-        printFileSize(".file.txt");
+        // generateHiddenFile("Folder", "file.txt", "this is very different");
+        // printFileSize(".file.txt");
         System.out.println(stringify(".file.txt"));
+        generateHiddenFile("file2.txt", "great homework!!!!! yay!!!!!");
+        printFileSize(".file.txt");
+        printFileSize(".file2.txt");
+        printFileSize(".file.txt", ".file2.txt");
+
     }
 }
