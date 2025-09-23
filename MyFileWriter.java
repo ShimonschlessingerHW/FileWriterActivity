@@ -1,6 +1,24 @@
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 
 public class MyFileWriter {
+    public static String hashFile(String filePath) {
+        try {
+            String content = stringify(filePath);
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(content.getBytes(StandardCharsets.UTF_8)); //these two lines googled from library
+            StringBuilder hex = new StringBuilder();
+            for (byte b : hashBytes) {
+                hex.append(String.format("%02x", b));
+            }
+            return hex.toString();
+
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
     public static String stringify(String filePath) {
         File file = new File(filePath);
         StringBuilder sb = new StringBuilder();
@@ -46,5 +64,6 @@ public class MyFileWriter {
         generateHiddenFile("Folder", "file.txt", "this is very different");
         printFileSize(".file.txt");
         System.out.println(stringify(".file.txt"));
+        System.out.println(hashFile(".file.txt"));
     }
 }
